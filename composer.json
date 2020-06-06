@@ -1,0 +1,26 @@
+{
+  "name": "geniv/nette-aps-driver",
+  "description": "APS driver component for Nette Framework",
+  "keywords": [
+    "nette",
+    "aps",
+    "geniv"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Radek Fryšták",
+      "email": "geniv.radek@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "dibi/dibi": ">=3.0",
+    "nette/utils": ">=2.4"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  }
+}
