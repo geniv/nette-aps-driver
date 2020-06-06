@@ -1,7 +1,7 @@
 Nette APS driver
 ================
 
-via APS 400 a APS mini Plus
+via APS 400 and APS mini Plus
 
 Installation
 ------------
