@@ -28,9 +28,16 @@ class ApsDriver
         $this->connection = $connection;
     }
 
+    //   ____
+    //  |  _ \ ___ _ __ ___  ___  _ __
+    //  | |_) / _ \ '__/ __|/ _ \| '_ \
+    //  |  __/  __/ |  \__ \ (_) | | | |
+    //  |_|   \___|_|  |___/\___/|_| |_|
+    //
 
     /**
      * Get list person.
+     * VIEW Osoby
      *
      * @return IDataSource
      */
@@ -43,24 +50,25 @@ class ApsDriver
 
     /**
      * Save person.
+     * STORED PROCEDURE: Uložení / editace osoby
      *
-     * @param int|null      $idPerson
-     * @param int|null      $idFolder
-     * @param string|null   $firstName
-     * @param string|null   $middleName
-     * @param string|null   $lastName
-     * @param string|null   $title
-     * @param string|null   $pin
-     * @param string|null   $workspace
-     * @param string|null   $job
-     * @param string|null   $personalNumber
-     * @param string|null   $phone
-     * @param string|null   $cellPhone
-     * @param string|null   $email
-     * @param int|null      $externalKey1
-     * @param int|null      $externalKey2
-     * @param DateTime|null $validityOrigin
-     * @param DateTime|null $validityExpiration
+     * @param int|null      $idPerson osoby; 0 = vytvoření nové osoby / HODNOTA = editace stávající osoby
+     * @param int|null      $idFolder reference [api_Folder].[IDFolder]: ID složky, do které bude osoba přiřazena
+     * @param string|null   $firstName křestní jméno
+     * @param string|null   $middleName prostřední jméno
+     * @param string|null   $lastName příjmení
+     * @param string|null   $title titul
+     * @param string|null   $pin PIN – pro aplikace s identifikací čtečka + PIN
+     * @param string|null   $workspace pracoviště
+     * @param string|null   $job funkce
+     * @param string|null   $personalNumber osobní číslo
+     * @param string|null   $phone telefon
+     * @param string|null   $cellPhone mobilní telefon
+     * @param string|null   $email email
+     * @param int|null      $externalKey1 vyhrazeno pro klíč do externí databáze
+     * @param int|null      $externalKey2 vyhrazeno pro klíč do externí databáze
+     * @param DateTime|null $validityOrigin počátek platnosti oprávnění
+     * @param DateTime|null $validityExpiration konec platnosti oprávnění
      * @return bool
      * @noinspection PhpUnused
      */
@@ -84,8 +92,9 @@ class ApsDriver
 
     /**
      * Delete person.
+     * STORED PROCEDURE: Mazání osoby
      *
-     * @param int $idPerson
+     * @param int $idPerson ID osoby
      * @return bool
      * @noinspection PhpUnused
      */
@@ -99,9 +108,16 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
+    //    ____              _
+    //   / ___|__ _ _ __ __| |
+    //  | |   / _` | '__/ _` |
+    //  | |___ (_| | | | (_| |
+    //   \____\__,_|_|  \__,_|
+    //
 
     /**
      * Get list card.
+     * VIEW: Karty
      *
      * @return IDataSource
      */
@@ -114,13 +130,14 @@ class ApsDriver
 
     /**
      * Save card.
+     * STORED PROCEDURE: Uložení / editace karty
      *
-     * @param int|null    $idCard
-     * @param string|null $code
-     * @param string|null $description
-     * @param bool|null   $isVisitors
-     * @param bool|null   $isOneTimeUse
-     * @param int|null    $idPerson
+     * @param int|null    $idCard ID karty; 0 = vytvoření nové karty / HODNOTA = editace stávající karty
+     * @param string|null $code reference [api_Person].[IDPerson]: ID osoby, které je karta přiřazena
+     * @param string|null $description kód karty; unikátní pro každou kartu
+     * @param bool|null   $isVisitors popis karty
+     * @param bool|null   $isOneTimeUse příznak návštěvnické karty (0=obyčejná; 1=návštěvnická)
+     * @param int|null    $idPerson příznak jednorázové karty (0=obyčejná; 1=jednorázová)
      * @return bool
      */
     public function saveCard(int $idCard = null, string $code = null, string $description = null,
@@ -137,8 +154,9 @@ class ApsDriver
 
     /**
      * Delete card.
+     * STORED PROCEDURE: Mazání karty
      *
-     * @param int $idCard
+     * @param int $idCard ID karty
      * @return bool
      */
     public function deleteCard(int $idCard): bool
@@ -152,13 +170,13 @@ class ApsDriver
     }
 
 
-    /**
-     * Issue card.
-     *
-     * @param int $idSystem
-     * @param int $idModule
-     * @return bool
-     */
+//    /**
+//     * Issue card.
+//     *
+//     * @param int $idSystem
+//     * @param int $idModule
+//     * @return bool
+//     */
 //    public function issueCard(int $idSystem, int $idModule): bool
 //    {
 //        //TODO neznami vystup
@@ -170,27 +188,16 @@ class ApsDriver
 //        return $result->getRowCount() > 0;
 //    }
 
-
-    /**
-     * Release card.
-     *
-     * @param int $idCard
-     * @return bool
-     * @noinspection PhpUnused
-     */
-    public function releaseCard(int $idCard): bool
-    {
-        /** @var NoDataResult $result */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $result = $this->connection->command()
-            ->exec('api_ReleaseCard %s', [$idCard])
-            ->execute();
-        return $result->getRowCount() > 0;
-    }
-
+    //   _____     _     _
+    //  |  ___|__ | | __| | ___ _ __ 
+    //  | |_ / _ \| |/ _` |/ _ \ '__|
+    //  |  _| (_) | | (_| |  __/ |   
+    //  |_|  \___/|_|\__,_|\___|_|   
+    //                               
 
     /**
      * Get list folder.
+     * VIEW: Složky
      *
      * @return IDataSource
      * @noinspection PhpUnused
@@ -204,10 +211,11 @@ class ApsDriver
 
     /**
      * SaveFolder.
+     * STORED PROCEDURE: Uložení / editace složky
      *
-     * @param int|null    $idFolder
-     * @param int|null    $parentIdFolder
-     * @param string|null $name
+     * @param int|null    $idFolder ID složky; 0 = vytvoření nové složky / HODNOTA = editace stávající složky
+     * @param int|null    $parentIdFolder reference [api_Folder].[IDFolder]: ID nadřazené složky
+     * @param string|null $name název
      * @return bool
      */
     public function saveFolder(int $idFolder = null, int $parentIdFolder = null, string $name = null): bool
@@ -223,8 +231,9 @@ class ApsDriver
 
     /**
      * Delete folder.
+     * STORED PROCEDURE: Mazání složky
      *
-     * @param int $idFolder
+     * @param int $idFolder ID složky
      * @return bool
      * @noinspection PhpUnused
      */
@@ -238,9 +247,16 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
+    //      _                         ____                       
+    //     / \   ___ ___ ___ ___ ___ / ___|_ __ ___  _   _ _ __  
+    //    / _ \ / __/ __/ _ \ __/ __| |  _| '__/ _ \| | | | '_ \ 
+    //   / ___ \ (__ (__  __\__ \__ \ |_| | | | (_) | |_| | |_) |
+    //  /_/   \_\___\___\___|___/___/\____|_|  \___/ \__,_| .__/ 
+    //                                                    |_|    
 
     /**
      * Get list access group.
+     * VIEW: Přístupové skupiny
      *
      * @return IDataSource
      * @noinspection PhpUnused
@@ -254,13 +270,14 @@ class ApsDriver
 
     /**
      * Save access group.
+     * STORED PROCEDURE: Uložení / editace přístupové skupiny
      *
-     * @param int|null    $idAccessGroup
-     * @param int|null    $idSystem
+     * @param int|null    $idAccessGroup ID přístupové skupiny
+     * @param int|null    $idSystem reference [api_System].[IDSystem]: ID systému, pro který jsou přístupy definovány
      * @param int|null    $number
      * @param int|null    $userNumber
-     * @param string|null $name
-     * @param bool|null   $accessModule01
+     * @param string|null $name název přístupové skupiny
+     * @param bool|null   $accessModule01 přístup na čtečku XX
      * @param bool|null   $accessModule02
      * @param bool|null   $accessModule03
      * @param bool|null   $accessModule04
@@ -324,7 +341,7 @@ class ApsDriver
      * @param bool|null   $accessModule62
      * @param bool|null   $accessModule63
      * @param bool|null   $accessModule64
-     * @param int|null    $authorizationModule01
+     * @param int|null    $authorizationModule01 příznak autorizace na čtečce XX
      * @param int|null    $authorizationModule02
      * @param int|null    $authorizationModule03
      * @param int|null    $authorizationModule04
@@ -458,8 +475,9 @@ class ApsDriver
 
     /**
      * Delete access group.
+     * STORED PROCEDURE: Mazání přístupové skupiny
      *
-     * @param int $idAccessGroup
+     * @param int $idAccessGroup ID přístupové skupiny
      * @return bool
      * @noinspection PhpUnused
      */
@@ -473,26 +491,16 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
-
-    /**
-     * Update access groups schedules and holidays.
-     *
-     * @return bool
-     * @noinspection PhpUnused
-     */
-    public function updateAccessGroupsSchedulesAndHolidays(): bool
-    {
-        /** @var NoDataResult $result */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $result = $this->connection->command()
-            ->exec('api_UploadAccessGroupsSchedulesAndHolidays')
-            ->execute();
-        return $result->getRowCount() > 0;
-    }
-
+    //   _____                 _   ____        __ _       _ _   _             
+    //  | ____|_   _____ _ __ | |_|  _ \  ___ / _(_)_ __ (_) |_(_) ___  _ __  
+    //  |  _| \ \ / / _ \ '_ \| __| | | |/ _ \ |_| | '_ \| | __| |/ _ \| '_ \ 
+    //  | |___ \ V /  __/ | | | |_| |_| |  __/  _| | | | | | |_| | (_) | | | |
+    //  |_____| \_/ \___|_| |_|\__|____/ \___|_| |_|_| |_|_|\__|_|\___/|_| |_|
+    //                                                                        
 
     /**
      * Get list event.
+     * VIEW: Událost
      * VIEW: Definice události
      *
      * @return IDataSource
@@ -532,6 +540,12 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
+    //   _   _       _ _     _
+    //  | | | | ___ | (_) __| | __ _ _   _
+    //  | |_| |/ _ \| | |/ _` |/ _` | | | |
+    //  |  _  | (_) | | | (_| | (_| | |_| |
+    //  |_| |_|\___/|_|_|\__,_|\__,_|\__, |
+    //                               |___/
 
     /**
      * Get list holiday.
@@ -549,6 +563,7 @@ class ApsDriver
 
     /**
      * Save holiday.
+     * STORED PROCEDURE: Uložení / editace svátku
      *
      * @param int|null    $idHoliday ID svátku; 0 = vytvoření nového svátku / HODNOTA = editace stávajícího svátku
      * @param int|null    $day den
@@ -572,7 +587,7 @@ class ApsDriver
      * Delete holiday.
      * STORED PROCEDURE: Mazání svátku
      *
-     * @param int $idHoliday
+     * @param int $idHoliday ID svátku
      * @return bool
      * @noinspection PhpUnused
      */
@@ -586,9 +601,16 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
+    //   __  __           _       _      
+    //  |  \/  | ___   __| |_   _| | ___ 
+    //  | |\/| |/ _ \ / _` | | | | |/ _ \
+    //  | |  | | (_) | (_| | |_| | |  __/
+    //  |_|  |_|\___/ \__,_|\__,_|_|\___|
+    //                                   
 
     /**
      * Get list module.
+     * VIEW: Modul
      *
      * @return IDataSource
      */
@@ -605,7 +627,7 @@ class ApsDriver
      *
      * @param int         $idModule ID modulu
      * @param int         $idSystem reference [api_System].[IDSystem]: ID systému, ke kterému modul patří
-     * @param string|null $name
+     * @param string|null $name název modulu
      * @return bool
      * @noinspection PhpUnused
      */
@@ -619,9 +641,16 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
+    //   ____                                  _                         ____                       
+    //  |  _ \ ___ _ __ ___  ___  _ __        / \   ___ ___ ___ ___ ___ / ___|_ __ ___  _   _ _ __  
+    //  | |_) / _ \ '__/ __|/ _ \| '_ \      / _ \ / __/ __/ _ \ __/ __| |  _| '__/ _ \| | | | '_ \ 
+    //  |  __/  __/ |  \__ \ (_) | | | |    / ___ \ (__ (__  __\__ \__ \ |_| | | | (_) | |_| | |_) |
+    //  |_|   \___|_|  |___/\___/|_| |_|_____/   \_\___\___\___|___/___/\____|_|  \___/ \__,_| .__/ 
+    //                                |_____|                                                |_|
 
     /**
      * Get list person access group.
+     * VIEW: Přiřazení osob do přístupových skupin
      *
      * @return IDataSource
      * @noinspection PhpUnused
@@ -635,9 +664,10 @@ class ApsDriver
 
     /**
      * Save person access group.
+     * STORED PROCEDURE: Uložení / editace přiřazení osob do přístupových skupin
      *
-     * @param int $idPerson
-     * @param int $idAccessGroup
+     * @param int $idPerson reference [api_Person].[IDPerson]: ID osoby
+     * @param int $idAccessGroup reference [api_AccessGroup].[IDAccessGroup]: ID přístupové skupiny
      * @return bool
      * @noinspection PhpUnused
      */
@@ -653,27 +683,11 @@ class ApsDriver
 
 
     /**
-     * Update access for person.
-     *
-     * @return bool
-     * @noinspection PhpUnused
-     */
-    public function updateAccessForPerson(): bool
-    {
-        /** @var NoDataResult $result */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $result = $this->connection->command()
-            ->exec('api_UpdateAccessForPerson')
-            ->execute();
-        return $result->getRowCount() > 0;
-    }
-
-
-    /**
      * Delete person access group.
+     * STORED PROCEDURE: Mazání přiřazení osob do přístupových skupin
      *
-     * @param int $idPerson
-     * @param int $idAccessGroup
+     * @param int $idPerson reference [api_Person].[IDPerson]: ID osoby
+     * @param int $idAccessGroup reference [api_AccessGroup].[IDAccessGroup]: ID přístupové skupiny
      * @return bool
      * @noinspection PhpUnused
      */
@@ -687,9 +701,16 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
+    //   ____       _              _       _
+    //  / ___|  ___| |__   ___  __| |_   _| | ___
+    //  \___ \ / __| '_ \ / _ \/ _` | | | | |/ _ \
+    //   ___) | (__| | | |  __/ (_| | |_| | |  __/
+    //  |____/ \___|_| |_|\___|\__,_|\__,_|_|\___|
+    //
 
     /**
      * Get list schedule.
+     * VIEW: Časové plány
      *
      * @return IDataSource
      */
@@ -702,18 +723,19 @@ class ApsDriver
 
     /**
      * Save schedule.
+     * STORED PROCEDURE: Uložení / editace časového plánu
      *
-     * @param int|null    $idSchedule
-     * @param int|null    $number
-     * @param string|null $name
-     * @param int|null    $mondayInterval1StartHour
-     * @param int|null    $mondayInterval1StartMinute
-     * @param int|null    $mondayInterval1StopHour
-     * @param int|null    $mondayInterval1StopMinute
-     * @param int|null    $mondayInterval2StartHour
-     * @param int|null    $mondayInterval2StartMinute
-     * @param int|null    $mondayInterval2StopHour
-     * @param int|null    $mondayInterval2StopMinute
+     * @param int|null    $idSchedule ID časového plánu; 0 = vytvoření nového plánu / HODNOTA = editace stávajícího plánu
+     * @param int|null    $number pořadové číslo časového plánu (1-64)
+     * @param string|null $name název časového plánu
+     * @param int|null    $mondayInterval1StartHour název časového plánu
+     * @param int|null    $mondayInterval1StartMinute začátek intervalu 1 - minuty
+     * @param int|null    $mondayInterval1StopHour konec intervalu 1 - hodiny
+     * @param int|null    $mondayInterval1StopMinute konec intervalu 1 - minuty
+     * @param int|null    $mondayInterval2StartHour začátek intervalu 2 - hodiny
+     * @param int|null    $mondayInterval2StartMinute začátek intervalu 2 - minuty
+     * @param int|null    $mondayInterval2StopHour konec intervalu 2 - hodiny
+     * @param int|null    $mondayInterval2StopMinute konec intervalu 2 - minuty
      * @param int|null    $tuesdayInterval1StartHour
      * @param int|null    $tuesdayInterval1StartMinute
      * @param int|null    $tuesdayInterval1StopHour
@@ -819,8 +841,9 @@ class ApsDriver
 
     /**
      * Delete schedule.
+     * STORED PROCEDURE: Mazání časového plánu
      *
-     * @param int $idSchedule
+     * @param int $idSchedule ID časového plánu
      * @return bool
      * @noinspection PhpUnused
      */
@@ -834,9 +857,16 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
+    //   ____            _                 
+    //  / ___| _   _ ___| |_ ___ _ __ ___  
+    //  \___ \| | | / __| __/ _ \ '_ ` _ \ 
+    //   ___) | |_| \__ \ |_  __/ | | | | |
+    //  |____/ \__, |___/\__\___|_| |_| |_|
+    //         |___/                       
 
     /**
      * Get list system.
+     * VIEW: Systém
      *
      * @return IDataSource
      * @noinspection PhpUnused
@@ -850,84 +880,154 @@ class ApsDriver
 
     /**
      * Update system.
+     * STORED PROCEDURE: Editace systému
      *
+     * @param int    $idSystem ID systému k editaci
+     * @param string $name název systému
      * @return bool
      * @noinspection PhpUnused
      */
-    public function updateSystem(): bool
+    public function updateSystem(int $idSystem, string $name): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_UpdateSystem')
+            ->exec('api_UpdateSystem %s', [$idSystem, $name])
             ->execute();
         return $result->getRowCount() > 0;
     }
 
+    //       _                     _                                _                    
+    //   ___| |_ ___  _ __ ___  __| |  _ __  _ __ ___   ___ ___  __| |_   _ _ __ ___ ___ 
+    //  / __| __/ _ \| '__/ _ \/ _` | | '_ \| '__/ _ \ / __/ _ \/ _` | | | | '__/ _ \ __|
+    //  \__ \ |_ (_) | | |  __/ (_| | | |_) | | | (_) | (__  __/ (_| | |_| | | |  __\__ \
+    //  |___/\__\___/|_|  \___|\__,_| | .__/|_|  \___/ \___\___|\__,_|\__,_|_|  \___|___/
+    //                                |_|                                                
 
     /**
      * Execute user event.
+     * STORED PROCEDURE: Spuštění uživatelské události
      *
+     * @param int $idSystem reference [api_System].[IDSystem]: ID systému
+     * @param int $idUserEvent ID uživatelské události
      * @return bool
      * @noinspection PhpUnused
      */
-    public function executeUserEvent(): bool
+    public function executeUserEvent(int $idSystem, int $idUserEvent): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_ExecuteUserEvent')
+            ->exec('api_ExecuteUserEvent %s', [$idSystem, $idUserEvent])
             ->execute();
         return $result->getRowCount() > 0;
     }
 
 
     /**
-     * Online authorization disable.
+     * Update access groups schedules and holidays.
+     * STORED PROCEDURE: Nahrání přístupových skupin, časových plánů a svátků
      *
      * @return bool
      * @noinspection PhpUnused
      */
-    public function onlineAuthorizationDisable(): bool
+    public function updateAccessGroupsSchedulesAndHolidays(): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_OnlineAuthorizationDisable')
+            ->exec('api_UploadAccessGroupsSchedulesAndHolidays')
             ->execute();
         return $result->getRowCount() > 0;
     }
 
 
     /**
-     * Online authorization enable.
+     * Update access for person.
+     * STORED PROCEDURE: Aktualizace oprávnění uživatele
      *
+     * @param int $idPerson reference [api_Person].[IDPerson]: ID osoby
      * @return bool
      * @noinspection PhpUnused
      */
-    public function onlineAuthorizationEnable(): bool
+    public function updateAccessForPerson(int $idPerson): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_OnlineAuthorizationEnable')
+            ->exec('api_UpdateAccessForPerson %s', [$idPerson])
             ->execute();
         return $result->getRowCount() > 0;
     }
+
+
+//    /**
+//     * Online authorization disable.
+//     *
+//     * @return bool
+//     * @noinspection PhpUnused
+//     */
+//    public function onlineAuthorizationDisable(): bool
+//    {
+//        /** @var NoDataResult $result */
+//        /** @noinspection PhpUndefinedMethodInspection */
+//        $result = $this->connection->command()
+//            ->exec('api_OnlineAuthorizationDisable')
+//            ->execute();
+//        return $result->getRowCount() > 0;
+//    }
+
+
+//    /**
+//     * Online authorization enable.
+//     *
+//     * @return bool
+//     * @noinspection PhpUnused
+//     */
+//    public function onlineAuthorizationEnable(): bool
+//    {
+//        /** @var NoDataResult $result */
+//        /** @noinspection PhpUndefinedMethodInspection */
+//        $result = $this->connection->command()
+//            ->exec('api_OnlineAuthorizationEnable')
+//            ->execute();
+//        return $result->getRowCount() > 0;
+//    }
 
 
     /**
      * Release person.
+     * STORED PROCEDURE: Uvolnění uživatele
      *
+     * @param int $idPerson reference [api_Person].[IDPerson]: ID osoby
      * @return bool
      * @noinspection PhpUnused
      */
-    public function releasePerson(): bool
+    public function releasePerson(int $idPerson): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_ReleasePerson')
+            ->exec('api_ReleasePerson %s', [$idPerson])
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Release card.
+     * STORED PROCEDURE: Uvolnění karty
+     *
+     * @param int $idCard reference [api_Card].[IDCard]: ID karty
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function releaseCard(int $idCard): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_ReleaseCard %s', [$idCard])
             ->execute();
         return $result->getRowCount() > 0;
     }
@@ -949,20 +1049,20 @@ class ApsDriver
     }
 
 
-    /**
-     * Set parameter.
-     *
-     * @return bool
-     */
-    public function setParameter(): bool
-    {
-        /** @var NoDataResult $result */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $result = $this->connection->command()
-            ->exec('api_SetParameter')
-            ->execute();
-        return $result->getRowCount() > 0;
-    }
+//    /**
+//     * Set parameter.
+//     *
+//     * @return bool
+//     */
+//    public function setParameter(): bool
+//    {
+//        /** @var NoDataResult $result */
+//        /** @noinspection PhpUndefinedMethodInspection */
+//        $result = $this->connection->command()
+//            ->exec('api_SetParameter')
+//            ->execute();
+//        return $result->getRowCount() > 0;
+//    }
 
 
     /**
@@ -988,15 +1088,19 @@ class ApsDriver
 
     /**
      * Set timer.
+     * STORED PROCEDURE: Nastavení hodnoty časovače
      *
+     * @param int $idSystem reference [api_System].[IDSystem]: ID systému
+     * @param int $idTimer ID časovače
+     * @param int $value hodnota
      * @return bool
      */
-    public function setTimer(): bool
+    public function setTimer(int $idSystem, int $idTimer, int $value): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_SetTimer')
+            ->exec('api_SetTimer %s', [$idSystem, $idTimer, $value])
             ->execute();
         return $result->getRowCount() > 0;
     }
@@ -1004,6 +1108,7 @@ class ApsDriver
 
     /**
      * Upload data.
+     * STORED PROCEDURE: nahrání dat
      *
      * @return bool
      * @noinspection PhpUnused
@@ -1021,16 +1126,18 @@ class ApsDriver
 
     /**
      * Upload scheduleX.
+     * STORED PROCEDURE: Nahrání konkrétního časového plánu
      *
+     * @param int $scheduleIdNumber reference [api_Schedule].[IDNumber]: Pořadové číslo časového plánu (1-64)
      * @return bool
      * @noinspection PhpUnused
      */
-    public function uploadScheduleX(): bool
+    public function uploadScheduleX(int $scheduleIdNumber): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_UploadScheduleX')
+            ->exec('api_UploadScheduleX %s', [$scheduleIdNumber])
             ->execute();
         return $result->getRowCount() > 0;
     }
