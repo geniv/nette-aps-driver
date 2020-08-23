@@ -24,40 +24,7 @@ require:
 methods:
 --------
 ```
-- getListPerson(): IDataSource
-- savePerson(int $idPerson = null, ...): bool
-- deletePerson(int $idPerson): bool
-
-- getListCard(): IDataSource
-- saveCard(int $idCard = null, ...): bool
-- deleteCard(int $idCard): bool
-- issueCard(int $idSystem, int $idModule): bool
-
-- getListFolder(): IDataSource
-- saveFolder(int $idFolder = null, ...): bool
-- deleteFolder(int $idFolder): bool
-
-- getListAccessGroup(): IDataSource
-- saveAccessGroup(int $idAccessGroup = null, ...): bool
-- deleteAccessGroup(int $idAccessGroup): bool
-
-- getListEvent(): IDataSource
-
-- getListHoliday(): IDataSource
-- saveHoliday(int $idHoliday = null, ...): bool
-- deleteHoliday(int $idHoliday): bool
-
-- getListModule(): IDataSource
-
-- getListPersonAccessGroup(): IDataSource
-- savePersonAccessGroup(int $idPerson = null, int $idAccessGroup = null): bool
-- deletePersonAccessGroup(int $idPerson, int $idAccessGroup): bool
-
-- getListSchedule(): IDataSource
-- saveSchedule(int $idSchedule = null, ...): bool
-- deleteSchedule(int $idSchedule): bool
-
-- getListSystem(): IDataSource
+via code
 ```
 
 Include in application
