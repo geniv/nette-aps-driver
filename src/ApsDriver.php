@@ -159,30 +159,31 @@ class ApsDriver
      * @param int $idModule
      * @return bool
      */
-    public function issueCard(int $idSystem, int $idModule): bool
-    {
-        //TODO neznami vystup
-        /** @noinspection PhpUndefinedMethodInspection */
-        /** @var NoDataResult $result */
-        $result = $this->connection->command()
-            ->exec('api_IssueCard %s', [$idSystem, $idModule])
-            ->execute();
-        return $result->getRowCount() > 0;
-    }
+//    public function issueCard(int $idSystem, int $idModule): bool
+//    {
+//        //TODO neznami vystup
+//        /** @noinspection PhpUndefinedMethodInspection */
+//        /** @var NoDataResult $result */
+//        $result = $this->connection->command()
+//            ->exec('api_IssueCard %s', [$idSystem, $idModule])
+//            ->execute();
+//        return $result->getRowCount() > 0;
+//    }
 
 
     /**
      * Release card.
      *
+     * @param int $idCard
      * @return bool
      * @noinspection PhpUnused
      */
-    public function releaseCard(): bool
+    public function releaseCard(int $idCard): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_ReleaseCard')
+            ->exec('api_ReleaseCard %s', [$idCard])
             ->execute();
         return $result->getRowCount() > 0;
     }
@@ -492,6 +493,7 @@ class ApsDriver
 
     /**
      * Get list event.
+     * VIEW: Definice události
      *
      * @return IDataSource
      */
@@ -509,16 +511,23 @@ class ApsDriver
 
     /**
      * Update event definition.
+     * STORED PROCEDURE: Editace definice typu události
      *
+     * @param int         $idEventCode ID kódu události
+     * @param int         $idModule reference [api_Module].[IDModule]: ID modulu, na kterém je typ události definován
+     * @param int         $idSystem reference [api_System].[IDSystem]: ID systému, ke kterému modul patří
+     * @param string|null $description textový popis typu události
+     * @param string|null $alertText textový popis poplachové zprávy
+     * @param int|null    $alertLevel úroveň poplachu
      * @return bool
      * @noinspection PhpUnused
      */
-    public function updateEventDefinition(): bool
+    public function updateEventDefinition(int $idEventCode, int $idModule, int $idSystem, string $description = null, string $alertText = null, int $alertLevel = null): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_UpdateEventDefinition')
+            ->exec('api_UpdateEventDefinition %s', [$idEventCode, $idModule, $idSystem, $description, $alertText, $alertLevel])
             ->execute();
         return $result->getRowCount() > 0;
     }
@@ -526,6 +535,7 @@ class ApsDriver
 
     /**
      * Get list holiday.
+     * VIEW: Svátky
      *
      * @return IDataSource
      * @noinspection PhpUnused
@@ -540,10 +550,10 @@ class ApsDriver
     /**
      * Save holiday.
      *
-     * @param int|null    $idHoliday
-     * @param int|null    $day
-     * @param int|null    $month
-     * @param string|null $name
+     * @param int|null    $idHoliday ID svátku; 0 = vytvoření nového svátku / HODNOTA = editace stávajícího svátku
+     * @param int|null    $day den
+     * @param int|null    $month měsíc
+     * @param string|null $name název
      * @return bool
      * @noinspection PhpUnused
      */
@@ -560,6 +570,7 @@ class ApsDriver
 
     /**
      * Delete holiday.
+     * STORED PROCEDURE: Mazání svátku
      *
      * @param int $idHoliday
      * @return bool
@@ -590,14 +601,15 @@ class ApsDriver
 
     /**
      * Update module.
+     * STORED PROCEDURE: Editace modulu
      *
-     * @param int|null    $idModule
-     * @param int|null    $idSystem
+     * @param int         $idModule ID modulu
+     * @param int         $idSystem reference [api_System].[IDSystem]: ID systému, ke kterému modul patří
      * @param string|null $name
      * @return bool
      * @noinspection PhpUnused
      */
-    public function updateModule(int $idModule = null, int $idSystem = null, string $name = null): bool
+    public function updateModule(int $idModule, int $idSystem, string $name = null): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
@@ -624,12 +636,12 @@ class ApsDriver
     /**
      * Save person access group.
      *
-     * @param int|null $idPerson
-     * @param int|null $idAccessGroup
+     * @param int $idPerson
+     * @param int $idAccessGroup
      * @return bool
      * @noinspection PhpUnused
      */
-    public function savePersonAccessGroup(int $idPerson = null, int $idAccessGroup = null): bool
+    public function savePersonAccessGroup(int $idPerson, int $idAccessGroup): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -955,16 +967,20 @@ class ApsDriver
 
     /**
      * Set register.
+     * STORED PROCEDURE: Nastavení hodnoty registru
      *
+     * @param int $idSystem reference [api_System].[IDSystem]:ID systému
+     * @param int $idRegister ID registru
+     * @param int $value hodnota [1-250]
      * @return bool
      * @noinspection PhpUnused
      */
-    public function setRegister(): bool
+    public function setRegister(int $idSystem, int $idRegister, int $value): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $this->connection->command()
-            ->exec('api_SetRegister')
+            ->exec('api_SetRegister %s', [$idSystem, $idRegister, $value])
             ->execute();
         return $result->getRowCount() > 0;
     }
