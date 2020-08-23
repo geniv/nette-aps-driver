@@ -62,6 +62,7 @@ class ApsDriver
      * @param DateTime|null $validityOrigin
      * @param DateTime|null $validityExpiration
      * @return bool
+     * @noinspection PhpUnused
      */
     public function savePerson(int $idPerson = null, int $idFolder = null,
                                string $firstName = null, string $middleName = null, string $lastName = null,
@@ -86,6 +87,7 @@ class ApsDriver
      *
      * @param int $idPerson
      * @return bool
+     * @noinspection PhpUnused
      */
     public function deletePerson(int $idPerson): bool
     {
@@ -159,7 +161,7 @@ class ApsDriver
      */
     public function issueCard(int $idSystem, int $idModule): bool
     {
-        //TODO neznami vysup
+        //TODO neznami vystup
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
         $result = $this->connection->command()
@@ -168,13 +170,29 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
-    //api_ReleaseCard
+
+    /**
+     * Release card.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function releaseCard(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_ReleaseCard')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
 
 
     /**
      * Get list folder.
      *
      * @return IDataSource
+     * @noinspection PhpUnused
      */
     public function getListFolder(): IDataSource
     {
@@ -207,6 +225,7 @@ class ApsDriver
      *
      * @param int $idFolder
      * @return bool
+     * @noinspection PhpUnused
      */
     public function deleteFolder(int $idFolder): bool
     {
@@ -223,6 +242,7 @@ class ApsDriver
      * Get list access group.
      *
      * @return IDataSource
+     * @noinspection PhpUnused
      */
     public function getListAccessGroup(): IDataSource
     {
@@ -368,6 +388,7 @@ class ApsDriver
      * @param int|null    $authorizationModule63
      * @param int|null    $authorizationModule64
      * @return bool
+     * @noinspection PhpUnused
      */
     public function saveAccessGroup(int $idAccessGroup = null, int $idSystem = null, int $number = null, int $userNumber = null, string $name = null,
                                     bool $accessModule01 = null, bool $accessModule02 = null, bool $accessModule03 = null, bool $accessModule04 = null, bool $accessModule05 = null,
@@ -439,6 +460,7 @@ class ApsDriver
      *
      * @param int $idAccessGroup
      * @return bool
+     * @noinspection PhpUnused
      */
     public function deleteAccessGroup(int $idAccessGroup): bool
     {
@@ -450,7 +472,22 @@ class ApsDriver
         return $result->getRowCount() > 0;
     }
 
-    //api_UploadAccessGroupsSchedulesAndHolidays
+
+    /**
+     * Update access groups schedules and holidays.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function updateAccessGroupsSchedulesAndHolidays(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_UploadAccessGroupsSchedulesAndHolidays')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
 
 
     /**
@@ -469,13 +506,29 @@ class ApsDriver
             ->and('ed.IDEventCode=e.ID_EventCode');
     }
 
-    //api_UpdateEventDefinition
+
+    /**
+     * Update event definition.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function updateEventDefinition(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_UpdateEventDefinition')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
 
 
     /**
      * Get list holiday.
      *
      * @return IDataSource
+     * @noinspection PhpUnused
      */
     public function getListHoliday(): IDataSource
     {
@@ -492,6 +545,7 @@ class ApsDriver
      * @param int|null    $month
      * @param string|null $name
      * @return bool
+     * @noinspection PhpUnused
      */
     public function saveHoliday(int $idHoliday = null, int $day = null, int $month = null, string $name = null): bool
     {
@@ -509,6 +563,7 @@ class ApsDriver
      *
      * @param int $idHoliday
      * @return bool
+     * @noinspection PhpUnused
      */
     public function deleteHoliday(int $idHoliday): bool
     {
@@ -532,13 +587,32 @@ class ApsDriver
             ->from('api_Module');
     }
 
-    //api_UpdateModule
+
+    /**
+     * Update module.
+     *
+     * @param int|null    $idModule
+     * @param int|null    $idSystem
+     * @param string|null $name
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function updateModule(int $idModule = null, int $idSystem = null, string $name = null): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_UpdateModule %s', [$idModule, $idSystem, $name])
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
 
 
     /**
      * Get list person access group.
      *
      * @return IDataSource
+     * @noinspection PhpUnused
      */
     public function getListPersonAccessGroup(): IDataSource
     {
@@ -553,6 +627,7 @@ class ApsDriver
      * @param int|null $idPerson
      * @param int|null $idAccessGroup
      * @return bool
+     * @noinspection PhpUnused
      */
     public function savePersonAccessGroup(int $idPerson = null, int $idAccessGroup = null): bool
     {
@@ -565,7 +640,21 @@ class ApsDriver
     }
 
 
-    //api_UpdateAccessForPerson
+    /**
+     * Update access for person.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function updateAccessForPerson(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_UpdateAccessForPerson')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
 
 
     /**
@@ -574,6 +663,7 @@ class ApsDriver
      * @param int $idPerson
      * @param int $idAccessGroup
      * @return bool
+     * @noinspection PhpUnused
      */
     public function deletePersonAccessGroup(int $idPerson, int $idAccessGroup): bool
     {
@@ -720,6 +810,7 @@ class ApsDriver
      *
      * @param int $idSchedule
      * @return bool
+     * @noinspection PhpUnused
      */
     public function deleteSchedule(int $idSchedule): bool
     {
@@ -736,6 +827,7 @@ class ApsDriver
      * Get list system.
      *
      * @return IDataSource
+     * @noinspection PhpUnused
      */
     public function getListSystem(): IDataSource
     {
@@ -743,16 +835,187 @@ class ApsDriver
             ->from('api_System');
     }
 
-    //api_UpdateSystem
 
-    //api_ExecuteUserEvent
-    //api_OnlineAuthorizationDisable
-    //api_OnlineAuthorizationEnable
-    //api_ReleasePerson
-    //api_RemoteOpenDoor
-    //api_SetParameter
-    //api_SetRegister
-    //api_SetTimer
-    //api_UploadData
-    //api_UploadScheduleX
+    /**
+     * Update system.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function updateSystem(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_UpdateSystem')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Execute user event.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function executeUserEvent(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_ExecuteUserEvent')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Online authorization disable.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function onlineAuthorizationDisable(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_OnlineAuthorizationDisable')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Online authorization enable.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function onlineAuthorizationEnable(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_OnlineAuthorizationEnable')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Release person.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function releasePerson(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_ReleasePerson')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Remote open door.
+     *
+     * @return bool
+     */
+    public function remoteOpenDoor(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_RemoteOpenDoor')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Set parameter.
+     *
+     * @return bool
+     */
+    public function setParameter(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_SetParameter')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Set register.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function setRegister(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_SetRegister')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Set timer.
+     *
+     * @return bool
+     */
+    public function setTimer(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_SetTimer')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Upload data.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function uploadData(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_UploadData')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
+
+
+    /**
+     * Upload scheduleX.
+     *
+     * @return bool
+     * @noinspection PhpUnused
+     */
+    public function uploadScheduleX(): bool
+    {
+        /** @var NoDataResult $result */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $result = $this->connection->command()
+            ->exec('api_UploadScheduleX')
+            ->execute();
+        return $result->getRowCount() > 0;
+    }
 }
