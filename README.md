@@ -44,3 +44,7 @@ $aps->getListPerson()->fetchAll();
 $aps->getListPerson()->where(['ID_Folder'=>7])->fetchAll();
 $aps->getListPerson()->where(['IsDeleted'=>true])->fetchAll();
 ```
+
+### create user
+`create person` -> `create od select card` (physical or virtual card) -> create row M:N `person_accesgroup`
+then for upload to hardware call: `[api_UploadData]` (`->uploadData()`)

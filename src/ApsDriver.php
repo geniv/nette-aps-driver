@@ -3,17 +3,15 @@
 use Dibi\Connection;
 use Dibi\Drivers\NoDataResult;
 use Dibi\IDataSource;
-use Nette\SmartObject;
 
 /**
  * Class ApsDriver
  *
  * @author  geniv
+ * @noinspection PhpUnused
  */
 class ApsDriver
 {
-    use SmartObject;
-
     /** @var Connection */
     private $connection;
 
@@ -39,12 +37,14 @@ class ApsDriver
      * Get list person.
      * VIEW Osoby
      *
+     * @param string $select
      * @return IDataSource
+     * @noinspection PhpUnused
      */
-    public function getListPerson(): IDataSource
+    public function getListPerson(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_Person');
+        return $this->connection->select($select)
+            ->from('api_Person')->as('person');
     }
 
 
@@ -72,12 +72,25 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function savePerson(int $idPerson = null, int $idFolder = null,
-                               string $firstName = null, string $middleName = null, string $lastName = null,
-                               string $title = null, string $pin = null, string $workspace = null, string $job = null,
-                               string $personalNumber = null, string $phone = null, string $cellPhone = null, string $email = null,
-                               int $externalKey1 = null, int $externalKey2 = null,
-                               DateTime $validityOrigin = null, DateTime $validityExpiration = null): bool
+    public function savePerson(
+        int      $idPerson = null,
+        int      $idFolder = null,
+        string   $firstName = null,
+        string   $middleName = null,
+        string   $lastName = null,
+        string   $title = null,
+        string   $pin = null,
+        string   $workspace = null,
+        string   $job = null,
+        string   $personalNumber = null,
+        string   $phone = null,
+        string   $cellPhone = null,
+        string   $email = null,
+        int      $externalKey1 = null,
+        int      $externalKey2 = null,
+        DateTime $validityOrigin = null,
+        DateTime $validityExpiration = null
+    ): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -119,12 +132,14 @@ class ApsDriver
      * Get list card.
      * VIEW: Karty
      *
+     * @param string $select
      * @return IDataSource
+     * @noinspection PhpUnused
      */
-    public function getListCard(): IDataSource
+    public function getListCard(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_Card');
+        return $this->connection->select($select)
+            ->from('api_Card')->as('card');
     }
 
 
@@ -133,15 +148,22 @@ class ApsDriver
      * STORED PROCEDURE: Uložení / editace karty
      *
      * @param int|null    $idCard ID karty; 0 = vytvoření nové karty / HODNOTA = editace stávající karty
-     * @param string|null $code reference [api_Person].[IDPerson]: ID osoby, které je karta přiřazena
-     * @param string|null $description kód karty; unikátní pro každou kartu
-     * @param bool|null   $isVisitors popis karty
-     * @param bool|null   $isOneTimeUse příznak návštěvnické karty (0=obyčejná; 1=návštěvnická)
-     * @param int|null    $idPerson příznak jednorázové karty (0=obyčejná; 1=jednorázová)
+     * @param int|null    $idPerson reference [api_Person].[IDPerson]: ID osoby, které je karta přiřazena
+     * @param string|null $code kód karty; unikátní pro každou kartu
+     * @param string|null $description popis karty
+     * @param bool|null   $isVisitors příznak návštěvnické karty (0=obyčejná; 1=návštěvnická)
+     * @param bool|null   $isOneTimeUse příznak jednorázové karty (0=obyčejná; 1=jednorázová)
      * @return bool
+     * @noinspection PhpUnused
      */
-    public function saveCard(int $idCard = null, string $code = null, string $description = null,
-                             bool $isVisitors = null, bool $isOneTimeUse = null, int $idPerson = null): bool
+    public function saveCard(
+        int    $idCard = null,
+        int    $idPerson = null,
+        string $code = null,
+        string $description = null,
+        bool   $isVisitors = null,
+        bool   $isOneTimeUse = null
+    ): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -158,6 +180,7 @@ class ApsDriver
      *
      * @param int $idCard ID karty
      * @return bool
+     * @noinspection PhpUnused
      */
     public function deleteCard(int $idCard): bool
     {
@@ -170,24 +193,6 @@ class ApsDriver
     }
 
 
-//    /**
-//     * Issue card.
-//     *
-//     * @param int $idSystem
-//     * @param int $idModule
-//     * @return bool
-//     */
-//    public function issueCard(int $idSystem, int $idModule): bool
-//    {
-//        //TODO neznami vystup
-//        /** @noinspection PhpUndefinedMethodInspection */
-//        /** @var NoDataResult $result */
-//        $result = $this->connection->command()
-//            ->exec('api_IssueCard %s', [$idSystem, $idModule])
-//            ->execute();
-//        return $result->getRowCount() > 0;
-//    }
-
     //   _____     _     _
     //  |  ___|__ | | __| | ___ _ __ 
     //  | |_ / _ \| |/ _` |/ _ \ '__|
@@ -199,13 +204,14 @@ class ApsDriver
      * Get list folder.
      * VIEW: Složky
      *
+     * @param string $select
      * @return IDataSource
      * @noinspection PhpUnused
      */
-    public function getListFolder(): IDataSource
+    public function getListFolder(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_Folder');
+        return $this->connection->select($select)
+            ->from('api_Folder')->as('folder');
     }
 
 
@@ -217,8 +223,13 @@ class ApsDriver
      * @param int|null    $parentIdFolder reference [api_Folder].[IDFolder]: ID nadřazené složky
      * @param string|null $name název
      * @return bool
+     * @noinspection PhpUnused
      */
-    public function saveFolder(int $idFolder = null, int $parentIdFolder = null, string $name = null): bool
+    public function saveFolder(
+        int    $idFolder = null,
+        int    $parentIdFolder = null,
+        string $name = null
+    ): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -258,13 +269,14 @@ class ApsDriver
      * Get list access group.
      * VIEW: Přístupové skupiny
      *
+     * @param string $select
      * @return IDataSource
      * @noinspection PhpUnused
      */
-    public function getListAccessGroup(): IDataSource
+    public function getListAccessGroup(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_AccessGroup');
+        return $this->connection->select($select)
+            ->from('api_AccessGroup')->as('accessGroup');
     }
 
 
@@ -408,33 +420,141 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function saveAccessGroup(int $idAccessGroup = null, int $idSystem = null, int $number = null, int $userNumber = null, string $name = null,
-                                    bool $accessModule01 = null, bool $accessModule02 = null, bool $accessModule03 = null, bool $accessModule04 = null, bool $accessModule05 = null,
-                                    bool $accessModule06 = null, bool $accessModule07 = null, bool $accessModule08 = null, bool $accessModule09 = null, bool $accessModule10 = null,
-                                    bool $accessModule11 = null, bool $accessModule12 = null, bool $accessModule13 = null, bool $accessModule14 = null, bool $accessModule15 = null,
-                                    bool $accessModule16 = null, bool $accessModule17 = null, bool $accessModule18 = null, bool $accessModule19 = null, bool $accessModule20 = null,
-                                    bool $accessModule21 = null, bool $accessModule22 = null, bool $accessModule23 = null, bool $accessModule24 = null, bool $accessModule25 = null,
-                                    bool $accessModule26 = null, bool $accessModule27 = null, bool $accessModule28 = null, bool $accessModule29 = null, bool $accessModule30 = null,
-                                    bool $accessModule31 = null, bool $accessModule32 = null, bool $accessModule33 = null, bool $accessModule34 = null, bool $accessModule35 = null,
-                                    bool $accessModule36 = null, bool $accessModule37 = null, bool $accessModule38 = null, bool $accessModule39 = null, bool $accessModule40 = null,
-                                    bool $accessModule41 = null, bool $accessModule42 = null, bool $accessModule43 = null, bool $accessModule44 = null, bool $accessModule45 = null,
-                                    bool $accessModule46 = null, bool $accessModule47 = null, bool $accessModule48 = null, bool $accessModule49 = null, bool $accessModule50 = null,
-                                    bool $accessModule51 = null, bool $accessModule52 = null, bool $accessModule53 = null, bool $accessModule54 = null, bool $accessModule55 = null,
-                                    bool $accessModule56 = null, bool $accessModule57 = null, bool $accessModule58 = null, bool $accessModule59 = null, bool $accessModule60 = null,
-                                    bool $accessModule61 = null, bool $accessModule62 = null, bool $accessModule63 = null, bool $accessModule64 = null,
-                                    int $authorizationModule01 = null, int $authorizationModule02 = null, int $authorizationModule03 = null, int $authorizationModule04 = null, int $authorizationModule05 = null,
-                                    int $authorizationModule06 = null, int $authorizationModule07 = null, int $authorizationModule08 = null, int $authorizationModule09 = null, int $authorizationModule10 = null,
-                                    int $authorizationModule11 = null, int $authorizationModule12 = null, int $authorizationModule13 = null, int $authorizationModule14 = null, int $authorizationModule15 = null,
-                                    int $authorizationModule16 = null, int $authorizationModule17 = null, int $authorizationModule18 = null, int $authorizationModule19 = null, int $authorizationModule20 = null,
-                                    int $authorizationModule21 = null, int $authorizationModule22 = null, int $authorizationModule23 = null, int $authorizationModule24 = null, int $authorizationModule25 = null,
-                                    int $authorizationModule26 = null, int $authorizationModule27 = null, int $authorizationModule28 = null, int $authorizationModule29 = null, int $authorizationModule30 = null,
-                                    int $authorizationModule31 = null, int $authorizationModule32 = null, int $authorizationModule33 = null, int $authorizationModule34 = null, int $authorizationModule35 = null,
-                                    int $authorizationModule36 = null, int $authorizationModule37 = null, int $authorizationModule38 = null, int $authorizationModule39 = null, int $authorizationModule40 = null,
-                                    int $authorizationModule41 = null, int $authorizationModule42 = null, int $authorizationModule43 = null, int $authorizationModule44 = null, int $authorizationModule45 = null,
-                                    int $authorizationModule46 = null, int $authorizationModule47 = null, int $authorizationModule48 = null, int $authorizationModule49 = null, int $authorizationModule50 = null,
-                                    int $authorizationModule51 = null, int $authorizationModule52 = null, int $authorizationModule53 = null, int $authorizationModule54 = null, int $authorizationModule55 = null,
-                                    int $authorizationModule56 = null, int $authorizationModule57 = null, int $authorizationModule58 = null, int $authorizationModule59 = null, int $authorizationModule60 = null,
-                                    int $authorizationModule61 = null, int $authorizationModule62 = null, int $authorizationModule63 = null, int $authorizationModule64 = null): bool
+    public function saveAccessGroup(
+        int    $idAccessGroup = null,
+        int    $idSystem = null,
+        int    $number = null,
+        int    $userNumber = null,
+        string $name = null,
+        bool   $accessModule01 = null,
+        bool   $accessModule02 = null,
+        bool   $accessModule03 = null,
+        bool   $accessModule04 = null,
+        bool   $accessModule05 = null,
+        bool   $accessModule06 = null,
+        bool   $accessModule07 = null,
+        bool   $accessModule08 = null,
+        bool   $accessModule09 = null,
+        bool   $accessModule10 = null,
+        bool   $accessModule11 = null,
+        bool   $accessModule12 = null,
+        bool   $accessModule13 = null,
+        bool   $accessModule14 = null,
+        bool   $accessModule15 = null,
+        bool   $accessModule16 = null,
+        bool   $accessModule17 = null,
+        bool   $accessModule18 = null,
+        bool   $accessModule19 = null,
+        bool   $accessModule20 = null,
+        bool   $accessModule21 = null,
+        bool   $accessModule22 = null,
+        bool   $accessModule23 = null,
+        bool   $accessModule24 = null,
+        bool   $accessModule25 = null,
+        bool   $accessModule26 = null,
+        bool   $accessModule27 = null,
+        bool   $accessModule28 = null,
+        bool   $accessModule29 = null,
+        bool   $accessModule30 = null,
+        bool   $accessModule31 = null,
+        bool   $accessModule32 = null,
+        bool   $accessModule33 = null,
+        bool   $accessModule34 = null,
+        bool   $accessModule35 = null,
+        bool   $accessModule36 = null,
+        bool   $accessModule37 = null,
+        bool   $accessModule38 = null,
+        bool   $accessModule39 = null,
+        bool   $accessModule40 = null,
+        bool   $accessModule41 = null,
+        bool   $accessModule42 = null,
+        bool   $accessModule43 = null,
+        bool   $accessModule44 = null,
+        bool   $accessModule45 = null,
+        bool   $accessModule46 = null,
+        bool   $accessModule47 = null,
+        bool   $accessModule48 = null,
+        bool   $accessModule49 = null,
+        bool   $accessModule50 = null,
+        bool   $accessModule51 = null,
+        bool   $accessModule52 = null,
+        bool   $accessModule53 = null,
+        bool   $accessModule54 = null,
+        bool   $accessModule55 = null,
+        bool   $accessModule56 = null,
+        bool   $accessModule57 = null,
+        bool   $accessModule58 = null,
+        bool   $accessModule59 = null,
+        bool   $accessModule60 = null,
+        bool   $accessModule61 = null,
+        bool   $accessModule62 = null,
+        bool   $accessModule63 = null,
+        bool   $accessModule64 = null,
+        int    $authorizationModule01 = null,
+        int    $authorizationModule02 = null,
+        int    $authorizationModule03 = null,
+        int    $authorizationModule04 = null,
+        int    $authorizationModule05 = null,
+        int    $authorizationModule06 = null,
+        int    $authorizationModule07 = null,
+        int    $authorizationModule08 = null,
+        int    $authorizationModule09 = null,
+        int    $authorizationModule10 = null,
+        int    $authorizationModule11 = null,
+        int    $authorizationModule12 = null,
+        int    $authorizationModule13 = null,
+        int    $authorizationModule14 = null,
+        int    $authorizationModule15 = null,
+        int    $authorizationModule16 = null,
+        int    $authorizationModule17 = null,
+        int    $authorizationModule18 = null,
+        int    $authorizationModule19 = null,
+        int    $authorizationModule20 = null,
+        int    $authorizationModule21 = null,
+        int    $authorizationModule22 = null,
+        int    $authorizationModule23 = null,
+        int    $authorizationModule24 = null,
+        int    $authorizationModule25 = null,
+        int    $authorizationModule26 = null,
+        int    $authorizationModule27 = null,
+        int    $authorizationModule28 = null,
+        int    $authorizationModule29 = null,
+        int    $authorizationModule30 = null,
+        int    $authorizationModule31 = null,
+        int    $authorizationModule32 = null,
+        int    $authorizationModule33 = null,
+        int    $authorizationModule34 = null,
+        int    $authorizationModule35 = null,
+        int    $authorizationModule36 = null,
+        int    $authorizationModule37 = null,
+        int    $authorizationModule38 = null,
+        int    $authorizationModule39 = null,
+        int    $authorizationModule40 = null,
+        int    $authorizationModule41 = null,
+        int    $authorizationModule42 = null,
+        int    $authorizationModule43 = null,
+        int    $authorizationModule44 = null,
+        int    $authorizationModule45 = null,
+        int    $authorizationModule46 = null,
+        int    $authorizationModule47 = null,
+        int    $authorizationModule48 = null,
+        int    $authorizationModule49 = null,
+        int    $authorizationModule50 = null,
+        int    $authorizationModule51 = null,
+        int    $authorizationModule52 = null,
+        int    $authorizationModule53 = null,
+        int    $authorizationModule54 = null,
+        int    $authorizationModule55 = null,
+        int    $authorizationModule56 = null,
+        int    $authorizationModule57 = null,
+        int    $authorizationModule58 = null,
+        int    $authorizationModule59 = null,
+        int    $authorizationModule60 = null,
+        int    $authorizationModule61 = null,
+        int    $authorizationModule62 = null,
+        int    $authorizationModule63 = null,
+        int    $authorizationModule64 = null
+    ): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -504,6 +624,7 @@ class ApsDriver
      * VIEW: Definice události
      *
      * @return IDataSource
+     * @noinspection PhpUnused
      */
     public function getListEvent(): IDataSource
     {
@@ -530,7 +651,14 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function updateEventDefinition(int $idEventCode, int $idModule, int $idSystem, string $description = null, string $alertText = null, int $alertLevel = null): bool
+    public function updateEventDefinition(
+        int    $idEventCode,
+        int    $idModule,
+        int    $idSystem,
+        string $description = null,
+        string $alertText = null,
+        int    $alertLevel = null
+    ): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
@@ -551,13 +679,14 @@ class ApsDriver
      * Get list holiday.
      * VIEW: Svátky
      *
+     * @param string $select
      * @return IDataSource
      * @noinspection PhpUnused
      */
-    public function getListHoliday(): IDataSource
+    public function getListHoliday(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_Holiday');
+        return $this->connection->select($select)
+            ->from('api_Holiday')->as('holiday');
     }
 
 
@@ -572,7 +701,12 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function saveHoliday(int $idHoliday = null, int $day = null, int $month = null, string $name = null): bool
+    public function saveHoliday(
+        int    $idHoliday = null,
+        int    $day = null,
+        int    $month = null,
+        string $name = null
+    ): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -612,12 +746,14 @@ class ApsDriver
      * Get list module.
      * VIEW: Modul
      *
+     * @param string $select
      * @return IDataSource
+     * @noinspection PhpUnused
      */
-    public function getListModule(): IDataSource
+    public function getListModule(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_Module');
+        return $this->connection->select($select)
+            ->from('api_Module')->as('module');
     }
 
 
@@ -631,7 +767,11 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function updateModule(int $idModule, int $idSystem, string $name = null): bool
+    public function updateModule(
+        int    $idModule,
+        int    $idSystem,
+        string $name = null
+    ): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
@@ -652,13 +792,14 @@ class ApsDriver
      * Get list person access group.
      * VIEW: Přiřazení osob do přístupových skupin
      *
+     * @param string $select
      * @return IDataSource
      * @noinspection PhpUnused
      */
-    public function getListPersonAccessGroup(): IDataSource
+    public function getListPersonAccessGroup(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_Person_AccessGroup');
+        return $this->connection->select($select)
+            ->from('api_Person_AccessGroup')->as('personAccessGroup');
     }
 
 
@@ -671,7 +812,10 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function savePersonAccessGroup(int $idPerson, int $idAccessGroup): bool
+    public function savePersonAccessGroup(
+        int $idPerson,
+        int $idAccessGroup
+    ): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -691,7 +835,10 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function deletePersonAccessGroup(int $idPerson, int $idAccessGroup): bool
+    public function deletePersonAccessGroup(
+        int $idPerson,
+        int $idAccessGroup
+    ): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -712,12 +859,14 @@ class ApsDriver
      * Get list schedule.
      * VIEW: Časové plány
      *
+     * @param string $select
      * @return IDataSource
+     * @noinspection PhpUnused
      */
-    public function getListSchedule(): IDataSource
+    public function getListSchedule(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_Schedule');
+        return $this->connection->select($select)
+            ->from('api_Schedule')->as('schedule');
     }
 
 
@@ -793,24 +942,77 @@ class ApsDriver
      * @param int|null    $holidayInterval2StopHour
      * @param int|null    $holidayInterval2StopMinute
      * @return bool
+     * @noinspection PhpUnused
      */
-    public function saveSchedule(int $idSchedule = null, int $number = null, string $name = null,
-                                 int $mondayInterval1StartHour = null, int $mondayInterval1StartMinute = null, int $mondayInterval1StopHour = null, int $mondayInterval1StopMinute = null,
-                                 int $mondayInterval2StartHour = null, int $mondayInterval2StartMinute = null, int $mondayInterval2StopHour = null, int $mondayInterval2StopMinute = null,
-                                 int $tuesdayInterval1StartHour = null, int $tuesdayInterval1StartMinute = null, int $tuesdayInterval1StopHour = null, int $tuesdayInterval1StopMinute = null,
-                                 int $tuesdayInterval2StartHour = null, int $tuesdayInterval2StartMinute = null, int $tuesdayInterval2StopHour = null, int $tuesdayInterval2StopMinute = null,
-                                 int $wednesdayInterval1StartHour = null, int $wednesdayInterval1StartMinute = null, int $wednesdayInterval1StopHour = null, int $wednesdayInterval1StopMinute = null,
-                                 int $wednesdayInterval2StartHour = null, int $wednesdayInterval2StartMinute = null, int $wednesdayInterval2StopHour = null, int $wednesdayInterval2StopMinute = null,
-                                 int $thursdayInterval1StartHour = null, int $thursdayInterval1StartMinute = null, int $thursdayInterval1StopHour = null, int $thursdayInterval1StopMinute = null,
-                                 int $thursdayInterval2StartHour = null, int $thursdayInterval2StartMinute = null, int $thursdayInterval2StopHour = null, int $thursdayInterval2StopMinute = null,
-                                 int $fridayInterval1StartHour = null, int $fridayInterval1StartMinute = null, int $fridayInterval1StopHour = null, int $fridayInterval1StopMinute = null,
-                                 int $fridayInterval2StartHour = null, int $fridayInterval2StartMinute = null, int $fridayInterval2StopHour = null, int $fridayInterval2StopMinute = null,
-                                 int $saturdayInterval1StartHour = null, int $saturdayInterval1StartMinute = null, int $saturdayInterval1StopHour = null, int $saturdayInterval1StopMinute = null,
-                                 int $saturdayInterval2StartHour = null, int $saturdayInterval2StartMinute = null, int $saturdayInterval2StopHour = null, int $saturdayInterval2StopMinute = null,
-                                 int $sundayInterval1StartHour = null, int $sundayInterval1StartMinute = null, int $sundayInterval1StopHour = null, int $sundayInterval1StopMinute = null,
-                                 int $sundayInterval2StartHour = null, int $sundayInterval2StartMinute = null, int $sundayInterval2StopHour = null, int $sundayInterval2StopMinute = null,
-                                 int $holidayInterval1StartHour = null, int $holidayInterval1StartMinute = null, int $holidayInterval1StopHour = null, int $holidayInterval1StopMinute = null,
-                                 int $holidayInterval2StartHour = null, int $holidayInterval2StartMinute = null, int $holidayInterval2StopHour = null, int $holidayInterval2StopMinute = null): bool
+    public function saveSchedule(
+        int    $idSchedule = null,
+        int    $number = null,
+        string $name = null,
+        int    $mondayInterval1StartHour = null,
+        int    $mondayInterval1StartMinute = null,
+        int    $mondayInterval1StopHour = null,
+        int    $mondayInterval1StopMinute = null,
+        int    $mondayInterval2StartHour = null,
+        int    $mondayInterval2StartMinute = null,
+        int    $mondayInterval2StopHour = null,
+        int    $mondayInterval2StopMinute = null,
+        int    $tuesdayInterval1StartHour = null,
+        int    $tuesdayInterval1StartMinute = null,
+        int    $tuesdayInterval1StopHour = null,
+        int    $tuesdayInterval1StopMinute = null,
+        int    $tuesdayInterval2StartHour = null,
+        int    $tuesdayInterval2StartMinute = null,
+        int    $tuesdayInterval2StopHour = null,
+        int    $tuesdayInterval2StopMinute = null,
+        int    $wednesdayInterval1StartHour = null,
+        int    $wednesdayInterval1StartMinute = null,
+        int    $wednesdayInterval1StopHour = null,
+        int    $wednesdayInterval1StopMinute = null,
+        int    $wednesdayInterval2StartHour = null,
+        int    $wednesdayInterval2StartMinute = null,
+        int    $wednesdayInterval2StopHour = null,
+        int    $wednesdayInterval2StopMinute = null,
+        int    $thursdayInterval1StartHour = null,
+        int    $thursdayInterval1StartMinute = null,
+        int    $thursdayInterval1StopHour = null,
+        int    $thursdayInterval1StopMinute = null,
+        int    $thursdayInterval2StartHour = null,
+        int    $thursdayInterval2StartMinute = null,
+        int    $thursdayInterval2StopHour = null,
+        int    $thursdayInterval2StopMinute = null,
+        int    $fridayInterval1StartHour = null,
+        int    $fridayInterval1StartMinute = null,
+        int    $fridayInterval1StopHour = null,
+        int    $fridayInterval1StopMinute = null,
+        int    $fridayInterval2StartHour = null,
+        int    $fridayInterval2StartMinute = null,
+        int    $fridayInterval2StopHour = null,
+        int    $fridayInterval2StopMinute = null,
+        int    $saturdayInterval1StartHour = null,
+        int    $saturdayInterval1StartMinute = null,
+        int    $saturdayInterval1StopHour = null,
+        int    $saturdayInterval1StopMinute = null,
+        int    $saturdayInterval2StartHour = null,
+        int    $saturdayInterval2StartMinute = null,
+        int    $saturdayInterval2StopHour = null,
+        int    $saturdayInterval2StopMinute = null,
+        int    $sundayInterval1StartHour = null,
+        int    $sundayInterval1StartMinute = null,
+        int    $sundayInterval1StopHour = null,
+        int    $sundayInterval1StopMinute = null,
+        int    $sundayInterval2StartHour = null,
+        int    $sundayInterval2StartMinute = null,
+        int    $sundayInterval2StopHour = null,
+        int    $sundayInterval2StopMinute = null,
+        int    $holidayInterval1StartHour = null,
+        int    $holidayInterval1StartMinute = null,
+        int    $holidayInterval1StopHour = null,
+        int    $holidayInterval1StopMinute = null,
+        int    $holidayInterval2StartHour = null,
+        int    $holidayInterval2StartMinute = null,
+        int    $holidayInterval2StopHour = null,
+        int    $holidayInterval2StopMinute = null
+    ): bool
     {
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
@@ -868,13 +1070,14 @@ class ApsDriver
      * Get list system.
      * VIEW: Systém
      *
+     * @param string $select
      * @return IDataSource
      * @noinspection PhpUnused
      */
-    public function getListSystem(): IDataSource
+    public function getListSystem(string $select = '*'): IDataSource
     {
-        return $this->connection->select('*')
-            ->from('api_System');
+        return $this->connection->select($select)
+            ->from('api_System')->as('system');
     }
 
 
@@ -887,7 +1090,10 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function updateSystem(int $idSystem, string $name): bool
+    public function updateSystem(
+        int    $idSystem,
+        string $name
+    ): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
@@ -913,7 +1119,10 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function executeUserEvent(int $idSystem, int $idUserEvent): bool
+    public function executeUserEvent(
+        int $idSystem,
+        int $idUserEvent
+    ): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
@@ -961,40 +1170,6 @@ class ApsDriver
     }
 
 
-//    /**
-//     * Online authorization disable.
-//     *
-//     * @return bool
-//     * @noinspection PhpUnused
-//     */
-//    public function onlineAuthorizationDisable(): bool
-//    {
-//        /** @var NoDataResult $result */
-//        /** @noinspection PhpUndefinedMethodInspection */
-//        $result = $this->connection->command()
-//            ->exec('api_OnlineAuthorizationDisable')
-//            ->execute();
-//        return $result->getRowCount() > 0;
-//    }
-
-
-//    /**
-//     * Online authorization enable.
-//     *
-//     * @return bool
-//     * @noinspection PhpUnused
-//     */
-//    public function onlineAuthorizationEnable(): bool
-//    {
-//        /** @var NoDataResult $result */
-//        /** @noinspection PhpUndefinedMethodInspection */
-//        $result = $this->connection->command()
-//            ->exec('api_OnlineAuthorizationEnable')
-//            ->execute();
-//        return $result->getRowCount() > 0;
-//    }
-
-
     /**
      * Release person.
      * STORED PROCEDURE: Uvolnění uživatele
@@ -1037,6 +1212,7 @@ class ApsDriver
      * Remote open door.
      *
      * @return bool
+     * @noinspection PhpUnused
      */
     public function remoteOpenDoor(): bool
     {
@@ -1049,22 +1225,6 @@ class ApsDriver
     }
 
 
-//    /**
-//     * Set parameter.
-//     *
-//     * @return bool
-//     */
-//    public function setParameter(): bool
-//    {
-//        /** @var NoDataResult $result */
-//        /** @noinspection PhpUndefinedMethodInspection */
-//        $result = $this->connection->command()
-//            ->exec('api_SetParameter')
-//            ->execute();
-//        return $result->getRowCount() > 0;
-//    }
-
-
     /**
      * Set register.
      * STORED PROCEDURE: Nastavení hodnoty registru
@@ -1075,7 +1235,11 @@ class ApsDriver
      * @return bool
      * @noinspection PhpUnused
      */
-    public function setRegister(int $idSystem, int $idRegister, int $value): bool
+    public function setRegister(
+        int $idSystem,
+        int $idRegister,
+        int $value
+    ): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
@@ -1094,8 +1258,13 @@ class ApsDriver
      * @param int $idTimer ID časovače
      * @param int $value hodnota
      * @return bool
+     * @noinspection PhpUnused
      */
-    public function setTimer(int $idSystem, int $idTimer, int $value): bool
+    public function setTimer(
+        int $idSystem,
+        int $idTimer,
+        int $value
+    ): bool
     {
         /** @var NoDataResult $result */
         /** @noinspection PhpUndefinedMethodInspection */
