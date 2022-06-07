@@ -26,6 +26,30 @@ class ApsDriver
         $this->connection = $connection;
     }
 
+    /**
+     * Load internal mssql connector
+     *
+     * @return Connection
+     * @noinspection PhpUnused
+     */
+    public function getConnection(): Connection
+    {
+        return $this->connection;
+    }
+
+    /**
+     * Load table promenne
+     *
+     * @param string $select
+     * @return IDataSource
+     * @noinspection PhpUnused
+     */
+    public function getPromenne(string $select = '*'): IDataSource
+    {
+        return $this->connection->select($select)
+            ->from('Promenne');
+    }
+
     //   ____
     //  |  _ \ ___ _ __ ___  ___  _ __
     //  | |_) / _ \ '__/ __|/ _ \| '_ \
