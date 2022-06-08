@@ -126,9 +126,12 @@ class ApsDriver
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var NoDataResult $result */
         $result = $this->connection->command()
-            ->exec('api_SavePerson %s', [$idPerson, $idFolder, $firstName, $middleName, $lastName, $title, $pin, $workspace,
-                                         $job, $personalNumber, $phone, $cellPhone, $email, $externalKey1, $externalKey2,
-                                         $validityOrigin, $validityExpiration])
+            ->exec('api_SavePerson %s', [
+                $idPerson, $idFolder, $firstName, $middleName, $lastName, $title, $pin, $workspace,
+                $job, $personalNumber, $phone, $cellPhone, $email, $externalKey1, $externalKey2,
+                $validityOrigin ? $validityOrigin->format('Y-m-d H:i:s') : null,
+                $validityExpiration ? $validityExpiration->format('Y-m-d H:i:s') : null
+            ])
             ->execute();
         return $result->getRowCount() > 0;
     }
