@@ -111,7 +111,7 @@ class ApsDriver
         string   $lastName = null,
         string   $title = null,
         string   $pin = null,
-        string   $workspace = null,
+        string   $workplace = null,
         string   $job = null,
         string   $personalNumber = null,
         string   $phone = null,
@@ -127,7 +127,7 @@ class ApsDriver
         /** @var NoDataResult $result */
         $result = $this->connection->command()
             ->exec('api_SavePerson %s', [
-                $idPerson, $idFolder, $firstName, $middleName, $lastName, $title, $pin, $workspace,
+                $idPerson, $idFolder, $firstName, $middleName, $lastName, $title, $pin, $workplace,
                 $job, $personalNumber, $phone, $cellPhone, $email, $externalKey1, $externalKey2,
                 $validityOrigin ? $validityOrigin->format('Y-m-d H:i:s') : null,
                 $validityExpiration ? $validityExpiration->format('Y-m-d H:i:s') : null
